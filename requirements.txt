@@ -26,5 +26,5 @@ xarray
 # for t.rast.udf
 openeo_udf
 
-# Script runtime dependency
-gh
+# Compile-time dependency for many addons
+grass-gis-helpers

@@ -4,7 +4,7 @@
 # repositories tagged with the topic "grass-gis-addons".
 #
 # SPDX-FileCopyrightText: (c) 2022-2026 Markus Neteler & mundialis GmbH & Co. KG
-# SPDX-FileCopyrightText: (c) 2022-2024 Carmen Tawalika & mundialis GmbH & Co. KG
+# SPDX-FileCopyrightText: (c) 2022-2024 Anika Weinmann, Carmen Tawalika & mundialis GmbH & Co. KG
 # SPDX-License-Identifier: GPL-2.0-or-later
 #
 # based on https://github.com/OSGeo/grass-addons/blob/grass8/utils/cronjobs_osgeo_lxd/compile_addons_git.sh
@@ -225,38 +225,6 @@ while IFS= read -r repo; do
   #      contains addon dirs, descend into it.
   # ---------------------------------------------------------------
 
-  # Helper: given a directory, list all addon subdirs within it
-  find_addons_in_dir() {
-    local searchdir="$1"
-    local parent_repo="$2"
-    local prefix="$3"   # optional prefix for addon name
-
-    # Look for directories containing a Makefile
-    find "$searchdir" -maxdepth 2 -name Makefile 2>/dev/null | while IFS= read -r mkf; do
-      local addon_dir
-      addon_dir=$(dirname "$mkf")
-      local addon_name
-      addon_name=$(basename "$addon_dir")
-
-      # Skip non-addon dirs (e.g. testsuite/, docs/, etc.)
-      case "$addon_name" in
-        testsuite|docs|html|man|bin|scripts|etc|.git|__pycache__|*.png|*.css|*.svg)
-          continue;;
-      esac
-
-      # Check if this looks like a GRASS addon (Makefile references MODULE_TOPDIR or has typical patterns)
-      if grep -q "MODULE_TOPDIR" "$mkf" 2>/dev/null || grep -q "^PGM" "$mkf" 2>/dev/null; then
-        local dest_name
-        if [ -n "$prefix" ]; then
-          dest_name="${prefix}_${addon_name}"
-        else
-          dest_name="$addon_name"
-        fi
-        echo "$addon_dir|$dest_name"
-      fi
-    done
-  }
-
   FOUND_ADDONS=0
 
   # Strategy a: Check if repo root has Makefile (single-addon repo)
@@ -368,6 +336,7 @@ INDEX_FILE="index"
 INDEX_MANUAL_PAGES_FILE="index_manual_pages"
 ADDONS_PATHS_JSON_FILE="addons_paths.json"
 SEPARATE=1
+LOGS_URL_PATH="${LOGS_URL_PATH:-../logs}"
 
 if [ ! -d "${ADDONBINPATH}" ]; then
   mkdir -p "${ADDONBINPATH}"
@@ -503,7 +472,7 @@ for m in $(ls -d */Makefile 2>/dev/null); do
   # Strip gcc generated ANSI escape codes from log file
   sed -i 's/\x1b\[[0-9;]*[a-zA-Z]//g' "$ADDON_PATH/logs/$m.log.txt"
   if [ $make_ret -eq 0 ]; then
-    printf "%-30s%s\n" "$c/$m" "SUCCESS" >> "$ADDON_PATH/logs/${INDEX_FILE}.log.txt"
+    printf "%-30s%s\n" "$m" "SUCCESS" >> "$ADDON_PATH/logs/${INDEX_FILE}.log.txt"
     echo " SUCCESS"
     echo "<td style=\"background-color: green\">SUCCESS</td>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
     # Update compilation cache
@@ -515,7 +484,7 @@ d['$m'] = '$current_hash'
 json.dump(d, open('$ADDON_CACHE_FILE', 'w'))
 " 2>/dev/null || true
   else
-    printf "%-30s%s\n" "$c/$m" "FAILED" >> "$ADDON_PATH/logs/${INDEX_FILE}.log.txt"
+    printf "%-30s%s\n" "$m" "FAILED" >> "$ADDON_PATH/logs/${INDEX_FILE}.log.txt"
     echo " FAILED"
     echo "<td style=\"background-color: red\">FAILED</td>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
   fi
@@ -762,8 +731,8 @@ href="https://grass.osgeo.org/grass-stable/manuals/g.extension.html">g.extension
 <h2 id="how-to-contribute">How to contribute?</h2>
 <p>See instructions here:
 <a href="https://github.com/mundialis/grass-gis-helpers/blob/main/How-to-create-a-GRASS-GIS-addon.md">How to create a GRASS GIS addon</a>.</p>
-<p><em>These manual pages are updated daily. Last run: '"$LASTDATE"'</em></p>
-<p>See also <a href="'"$ADDON_PATH/logs/index.html"'">log files of compilation</a>.</p>
+<p><em>These manual pages are updated weekly via GitHub Actions. Last run: '"$LASTDATE"'</em></p>
+<p>See also <a href="'"$LOGS_URL_PATH"'/index.html">log files of compilation</a>.</p>
 <p>The GRASS addons here are generated from the
 <a href="https://github.com/topics/grass-gis-addons">GitHub topic: grass-gis-addons</a>.</p>
 
