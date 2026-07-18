@@ -647,7 +647,7 @@ generate() {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="The GRASS Development Team">
-  <title>GRASS GIS '"${major}.${minor}"' Addons Manual pages</title>
+  <title>GRASS GIS '"${major}.${minor}"' Addons Manual pages available outside of the 'grass-addons' repository</title>
   <link rel="stylesheet" href="grassdocs.css">
   <style>
     body {
