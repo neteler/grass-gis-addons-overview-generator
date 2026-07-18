@@ -16,12 +16,12 @@ jobs:
     container:
       image: osgeo/grass-gis:releasebranch_8_5-debian
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install dependencies
         run: |
           apt-get update
           apt-get install -y gh wget python3-pip git
-          pip3 install -r requirements.txt
+          pip3 install --break-system-packages -r requirements.txt
       - name: Generate addon overview
         env:
           LOGS_URL_PATH: logs
