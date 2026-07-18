@@ -21,7 +21,7 @@ The output is an HTML table with all addon manual pages, the source repository l
 
 ### Manual page overview
 
-![Manual overview](grass-gis-addons-overview.png)
+![Manual overview](grass-gis-addons-overview.jpg)
 
 ### Compilation log overview
 
