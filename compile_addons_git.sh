@@ -3,9 +3,13 @@
 # This script compiles GRASS GIS addons discovered across multiple GitHub
 # repositories tagged with the topic "grass-gis-addons".
 #
-# Markus Neteler, 2022-2026
+# SPDX-FileCopyrightText: (c) 2022-2026 Markus Neteler & mundialis GmbH & Co. KG
+# SPDX-FileCopyrightText: (c) 2022-2024 Carmen Tawalika & mundialis GmbH & Co. KG
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
 # based on https://github.com/OSGeo/grass-addons/blob/grass8/utils/cronjobs_osgeo_lxd/compile_addons_git.sh
 # generalization supported by opencode.ai tool, OpenCode Zen (DeepSeek V4 Flash Free)
+#######################################################################
 #
 # Usage:
 #   bash compile_addons_git.sh
@@ -28,6 +32,7 @@
 #
 # Note: GitHub API has a rate limit of 60 unauthenticated requests/hour.
 #       Authenticated (gh auth login) raises this to 5000/hour.
+#######################################################################
 
 #### fail on error
 # set -e
