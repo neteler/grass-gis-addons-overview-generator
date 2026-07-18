@@ -17,15 +17,15 @@ jobs:
       image: osgeo/grass-gis:releasebranch_8_5-debian
     steps:
       - uses: actions/checkout@v5
-      - name: Install dependencies
-        run: |
-          apt-get update
-          apt-get install -y gh wget python3-pip git
-          pip3 install --break-system-packages -r requirements.txt
       - name: Generate addon overview
         env:
           LOGS_URL_PATH: logs
         run: |
+          apt-get update
+          apt-get install -y gh wget python3-pip git
+          python3 -m venv /tmp/venv
+          source /tmp/venv/bin/activate
+          pip install -r requirements.txt
           bash compile_addons_git.sh \
             -b /tmp/build \
             -m "$GITHUB_WORKSPACE/public" \
