@@ -1,0 +1,53 @@
+name: GRASS GIS addon overview generator
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: "15 3 * * 0"
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    container:
+      image: osgeo/grass-gis:releasebranch_8_5-debian
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y gh wget python3-pip git
+          pip3 install -r requirements.txt
+      - name: Generate addon overview
+        env:
+          LOGS_URL_PATH: logs
+        run: |
+          bash compile_addons_git.sh \
+            -b /tmp/build \
+            -m "$GITHUB_WORKSPACE/public" \
+            -s /tmp/grass_addons \
+            -w /tmp/grass_addons_repos \
+            -c /tmp/addon_cache
+          mkdir -p "$GITHUB_WORKSPACE/public/logs"
+          cp -r /tmp/build/logs/* "$GITHUB_WORKSPACE/public/logs/"
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: "public"
+
+  deploy:
+    needs: generate
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
