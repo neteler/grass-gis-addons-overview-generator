@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           apt-get update
-          apt-get install -y gh wget python3-pip git
+          apt-get install -y gh wget python3-pip git python3-gdal libgdal-dev
           python3 -m venv /tmp/venv
           source /tmp/venv/bin/activate
           pip install -r requirements.txt

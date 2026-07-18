@@ -14,7 +14,7 @@ git+https://github.com/wpgp/wpgpDownloadPy
 # For i.up42.import:
 # up42-py==0.15.0
 # GDAL bindings for various addons (g.region.bbox, r.classify, etc.):
-gdal
+# Installed via apt python3-gdal (matches system GDAL version)
 # for i.eodag
 eodag
 # for i.s2_id.filter
