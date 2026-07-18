@@ -20,6 +20,7 @@ jobs:
       - name: Generate addon overview
         env:
           LOGS_URL_PATH: logs
+        shell: bash
         run: |
           apt-get update
           apt-get install -y gh wget python3-pip git
