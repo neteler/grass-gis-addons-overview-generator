@@ -25,6 +25,8 @@ zenodo-get
 xarray
 # for t.rast.udf
 openeo_udf
+# for t.rast.udf
+geopandas
 
 # Compile-time dependency for many addons
 grass-gis-helpers
