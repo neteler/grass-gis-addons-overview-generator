@@ -647,7 +647,7 @@ generate() {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="The GRASS Development Team">
-  <title>GRASS GIS '"${major}.${minor}"' Addons Manual pages available outside of the 'grass-addons' repository</title>
+  <title>GRASS GIS '"$GMAJOR"' Addons Manual Overview</title>
   <link rel="stylesheet" href="grassdocs.css">
   <style>
     body {
@@ -720,17 +720,34 @@ generate() {
 <body>
 <h1 id="addon-tools">'"$MYTITLE"'</h1>
 
-<p>GRASS GIS is free software,
-anyone may develop their own extensions (addons). The addons listed
-here are currently not part of the core software package.
-Addons can easily be <b>installed</b> in your local GRASS GIS installation
-through the graphical user interface (<i>Menu - Settings - Addons
-Extension - Install</i>) or via the <a
-href="https://grass.osgeo.org/grass-stable/manuals/g.extension.html">g.extension</a> command.</p>
+<p>This page provides an overview of GRASS GIS '"$GMAJOR"' Addon manual pages
+available outside of the official OSGeo <a
+href="https://github.com/OSGeo/grass-addons/">grass-addons repository</a>.
+It serves as a central index for community tools that are currently hosted
+independently.</p>
 
-<h2 id="how-to-contribute">How to contribute?</h2>
-<p>See instructions here:
-<a href="https://github.com/mundialis/grass-gis-helpers/blob/main/How-to-create-a-GRASS-GIS-addon.md">How to create a GRASS GIS addon</a>.</p>
+<h2 id="join-main-repo">Join the Main Community Repository</h2>
+<p>Are you maintaining an addon listed here? We warmly invite you to move your
+valuable contributions to the official <b>OSGeo <a
+href="https://github.com/OSGeo/grass-addons/">grass-addons repository</a></b>.</p>
+<p>By hosting your addon in the main repository, you help ensure:</p>
+<ul>
+<li><b>Greater Visibility:</b> Your tool becomes directly accessible to the
+global GRASS community via the standard
+<a href="https://grass.osgeo.org/grass-stable/manuals/g.extension.html">g.extension</a>
+installer.</li>
+<li><b>Long-term Stability:</b> Your code benefits from collective maintenance,
+automated testing, and integration with the official documentation build
+system.</li>
+<li><b>Collaboration:</b> You join a vibrant network of developers, making it
+easier to share knowledge and improve GRASS GIS together.</li>
+</ul>
+<p>Moving your addon is a straightforward process. Please review the
+<a href="https://github.com/OSGeo/grass-addons/blob/grass8/CONTRIBUTING.md">Contribution Guidelines</a>
+on GitHub to get started. If you need assistance with the migration, the GRASS
+development community is ready to help.</p>
+<p>Let&rsquo;s grow the ecosystem together!</p>
+
 <p><em>These manual pages are updated weekly via GitHub Actions. Last run: '"$LASTDATE"'</em></p>
 <p>See also <a href="'"$LOGS_URL_PATH"'/index.html">log files of compilation</a>.</p>
 <p>The GRASS addons here are generated from the
