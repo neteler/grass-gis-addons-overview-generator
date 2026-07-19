@@ -17,6 +17,7 @@ git+https://github.com/wpgp/wpgpDownloadPy
 # Installed via apt python3-gdal (matches system GDAL version)
 # for i.eodag
 eodag
+pydantic<2
 # for i.s2_id.filter
 pystac
 # for r.import.probav_lc

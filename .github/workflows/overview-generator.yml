@@ -25,6 +25,7 @@ jobs:
           python3 -m venv --system-site-packages /tmp/venv
           source /tmp/venv/bin/activate
           pip install -r requirements.txt
+          pip install gdal=="$(gdal-config --version)"
           bash compile_addons_git.sh \
             -b /tmp/build \
             -m "$GITHUB_WORKSPACE/public" \
