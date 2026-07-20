@@ -648,6 +648,11 @@ generate() {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="The GRASS Development Team">
   <title>GRASS GIS '"$GMAJOR"' Addons Manual Overview</title>
+  <meta property="og:title" content="GRASS GIS '"$GMAJOR"' Addons Manual Overview">
+  <meta property="og:description" content="Overview of GRASS GIS '"$GMAJOR"' Addon manual pages available outside of the official OSGeo grass-addons repository.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/neteler/grass-gis-addons-overview-generator/main/grass-gis-addons-overview.jpg">
+  <meta property="og:url" content="https://neteler.github.io/grass-gis-addons-overview-generator/">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="grassdocs.css">
   <style>
     body {
@@ -836,6 +841,7 @@ Found '"$addon_count"' addons
 </p>
 
 <hr>
+<p><a href="https://github.com/neteler/grass-gis-addons-overview-generator/">Fork me at https://github.com/neteler/grass-gis-addons-overview-generator/</a></p>
 <p>&copy; 2015-'"$year"' <a href="https://grass.osgeo.org">GRASS Development Team</a>, '"$MYTITLE"'<br>
 <em><small>'"$(date -u)"'</small></em></p>
 </body>
