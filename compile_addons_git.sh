@@ -868,9 +868,97 @@ generate "$GMAJOR" "$GMINOR" "$GPATCH" "$ADDONMANPATH"
   else
     echo "  WARNING: no SVG-to-PNG converter found (install ImageMagick or librsvg)"
   fi
-  wget --quiet -N https://grass.osgeo.org/grass-stable/manuals/grassdocs.css 2>/dev/null
-  wget --quiet -N https://grass.osgeo.org/grass-stable/manuals/hamburger_menu_close.svg 2>/dev/null
-  wget --quiet -N https://grass.osgeo.org/grass-stable/manuals/hamburger_menu.svg 2>/dev/null
+  # Write grassdocs.css for legacy addon HTML pages (Material CSS from grass-stable
+  # now targets .md-typeset classes, but addon pages use bare HTML 4.01 elements)
+  cat > grassdocs.css << 'CSSEOF'
+/* GRASS GIS Addon Manual Pages - Legacy HTML styling */
+:root {
+  --grass-green: #4cb05b;
+  --grass-dark: #023905;
+  --grass-teal: #27575c;
+  --grass-teal-light: #4a787d;
+  --grass-bg: #ffffff;
+  --grass-bg-alt: #f7f7f7;
+  --grass-border: #d8d8d8;
+  --grass-text: #021905;
+  --grass-text-muted: #555;
+  --grass-font: 'Fira Sans Regular', 'Roboto', -apple-system, sans-serif;
+  --grass-font-mono: 'Fira Code', 'Consolas', 'Liberation Mono', monospace;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: var(--grass-font);
+  color: var(--grass-text);
+  line-height: 1.6;
+  padding: 20px 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--grass-bg);
+}
+#container > a:first-child img { height: 80px; }
+hr.header {
+  border: none;
+  border-top: 2px solid var(--grass-green);
+  margin: 1em 0;
+}
+h2 {
+  color: var(--grass-teal);
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 1.5em 0 0.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--grass-border);
+}
+h2 a { color: inherit; text-decoration: none; }
+h3 {
+  color: var(--grass-teal-light);
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 1.3em 0 0.6em;
+}
+a { color: var(--grass-green); text-decoration: none; }
+a:hover { color: #3a9048; text-decoration: underline; }
+code, tt {
+  font-family: var(--grass-font-mono);
+  font-size: 0.92em;
+  background: var(--grass-bg-alt);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+pre { background: var(--grass-bg-alt); padding: 1em; border-radius: 4px; overflow-x: auto; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8em 0;
+  font-size: 0.95em;
+}
+table td, table th {
+  border: 1px solid var(--grass-border);
+  padding: 0.5em 0.8em;
+  vertical-align: top;
+}
+table tr:nth-child(even) { background: var(--grass-bg-alt); }
+dl { margin: 0.5em 0; }
+dt {
+  font-weight: 600;
+  margin-top: 0.6em;
+  color: var(--grass-dark);
+}
+dd { margin: 0.2em 0 0.5em 1.5em; }
+ul, ol { padding-left: 1.5em; }
+li { margin: 0.3em 0; }
+img { max-width: 100%; height: auto; }
+p { margin: 0.6em 0; }
+em { font-style: italic; }
+b, strong { font-weight: 600; }
+hr {
+  border: none;
+  border-top: 1px solid var(--grass-border);
+  margin: 1.5em 0;
+}
+code a, tt a { color: inherit; }
+h4 { color: var(--grass-teal-light); font-size: 1.05em; margin: 1em 0 0.4em; }
+CSSEOF
 )
 
 
