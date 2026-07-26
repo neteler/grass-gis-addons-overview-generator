@@ -799,7 +799,11 @@ development community is ready to help.</p>
              sed 's/.*content="//' | sed 's/".*//' | head -1)
       if [ -n "$desc" ]; then
         echo "$desc" >> index.html
+      else
+        echo "$module: No description available" >> index.html
       fi
+    else
+      echo "$module: No description available" >> index.html
     fi
     echo '</td>
   <td>' >> index.html
