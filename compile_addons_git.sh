@@ -564,6 +564,26 @@ done
 \cp "$ADDONBINPATH"/*/docs/html/*.html "$ADDONMANPATH" 2>/dev/null
 \cp "$ADDONBINPATH"/*/docs/html/*.png "$ADDONMANPATH" 2>/dev/null
 
+# Inject navigation bar into each addon manual page
+for f in "$ADDONMANPATH"/*.html; do
+  [ "$(basename "$f")" = "index.html" ] && continue
+  module=$(basename "$f" .html)
+  repo="${ADDON_REPO[$module]}"
+  repolink=""
+  if [ -n "$repo" ]; then
+    repolink="<span style=\"color: rgba(255,255,255,0.5); margin: 0 0.6em;\">|</span>\\
+<a href=\"https://github.com/$repo\" style=\"color: #fff; text-decoration: none;\">GitHub</a>"
+  fi
+  sed -i "/^<hr class=\"header\">$/a\\
+<nav style=\"background: #27575c; color: #fff; padding: 0.6em 1em; margin: 0 0 1.5em; border-radius: 4px; font-size: 0.9em;\">\\
+<a href=\"index.html\" style=\"color: #fff; text-decoration: none;\">Overview</a>\\
+<span style=\"color: rgba(255,255,255,0.5); margin: 0 0.6em;\">|</span>\\
+<a href=\"${LOGS_URL_PATH:-../logs}/index.html\" style=\"color: #fff; text-decoration: none;\">Logs</a>\\
+$repolink\\
+<span style=\"float: right;\"><b>$module</b></span>\\
+</nav>" "$f" 2>/dev/null
+done
+
 module_prefix() {
   case "$1" in
     "ace")
