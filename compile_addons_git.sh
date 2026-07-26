@@ -793,17 +793,18 @@ development community is ready to help.</p>
   <td><a href="'"$currfile"'">'"$module"'</a></td>
   <td>' >> index.html
 
-    # Extract description from the first <meta name="description"> tag in the manual page
+    # Extract description from the first <meta name="description"> tag or
+    # GRASS HTML comment <!-- meta page description: ... --> in the manual page
     if [ -f "$currfile" ]; then
       desc=$(grep -i '<meta.*name="description"' "$currfile" 2>/dev/null | \
              sed 's/.*content="//' | sed 's/".*//' | head -1)
+      if [ -z "$desc" ]; then
+        desc=$(grep '<!-- meta page description:' "$currfile" 2>/dev/null | \
+               sed 's/.*<!-- meta page description: *//' | sed 's/ *-->.*//' | head -1)
+      fi
       if [ -n "$desc" ]; then
         echo "$desc" >> index.html
-      else
-        echo "$module: No description available" >> index.html
       fi
-    else
-      echo "$module: No description available" >> index.html
     fi
     echo '</td>
   <td>' >> index.html
