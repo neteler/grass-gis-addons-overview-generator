@@ -342,6 +342,9 @@ if [ ! -d "${ADDONBINPATH}" ]; then
   mkdir -p "${ADDONBINPATH}"
 fi
 
+# Ensure locale scriptstrings dir exists (GRASS Make rules write translation stubs there)
+mkdir -p "$TOPDIR/locale/scriptstrings" 2>/dev/null || true
+
 # Generate temporary location (needed by g.extension -j and some addon Makefiles)
 DEMOLOCATION="/tmp/grass_demolocation"
 if [ ! -d "$DEMOLOCATION" ]; then
