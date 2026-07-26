@@ -28,6 +28,10 @@ xarray
 openeo_udf
 # for t.rast.udf
 geopandas
+# for i.hyper.continuum
+scipy
+# for r.in.emit
+netCDF4
 
 # Compile-time dependency for many addons
 grass-gis-helpers
