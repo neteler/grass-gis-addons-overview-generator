@@ -882,15 +882,9 @@ generate "$GMAJOR" "$GMINOR" "$GPATCH" "$ADDONMANPATH"
 
 # Fetch supporting files
 (cd "$ADDONMANPATH" || exit 1;
-  # Download and convert logo SVG to PNG for manual page footer
-  wget --quiet -N https://grass.osgeo.org/images/logos/grass-logo/grass-gradient.svg -O grass_logo.svg 2>/dev/null
-  if command -v convert &>/dev/null; then
-    convert grass_logo.svg grass_logo.png 2>/dev/null
-  elif command -v rsvg-convert &>/dev/null; then
-    rsvg-convert grass_logo.svg -o grass_logo.png 2>/dev/null
-  else
-    echo "  WARNING: no SVG-to-PNG converter found (install ImageMagick or librsvg)"
-  fi
+  # Copy GRASS logo PNG from repo
+  cp "$MYPWD/grass_logo.png" grass_logo.png 2>/dev/null || \
+    echo "  WARNING: grass_logo.png not found in repo root"
   # Create hamburger menu icons for the mobile TOC (inserted by JS in addon pages)
   cat > hamburger_menu.svg << 'SVGEOF'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
