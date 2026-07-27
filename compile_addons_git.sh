@@ -82,8 +82,9 @@ GRASSVERSION=$VERSION
 
 MYTITLE="GRASS GIS ${GMAJOR} Addons Manual pages available outside of the 'grass-addons' repository"
 
-# launch dir
-MYPWD=$(pwd)
+# launch dir (save original before it gets overwritten)
+ORIG_PWD=$(pwd)
+MYPWD=$ORIG_PWD
 
 ########################################################################
 # Step 1: Discover GitHub repos with topic "grass-gis-addons"
@@ -883,7 +884,7 @@ generate "$GMAJOR" "$GMINOR" "$GPATCH" "$ADDONMANPATH"
 # Fetch supporting files
 (cd "$ADDONMANPATH" || exit 1;
   # Copy GRASS logo PNG from repo
-  cp "$MYPWD/grass_logo.png" grass_logo.png 2>/dev/null || \
+  cp "$ORIG_PWD/grass_logo.png" grass_logo.png 2>/dev/null || \
     echo "  WARNING: grass_logo.png not found in repo root"
   # Create hamburger menu icons for the mobile TOC (inserted by JS in addon pages)
   cat > hamburger_menu.svg << 'SVGEOF'
