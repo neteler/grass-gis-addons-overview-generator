@@ -891,6 +891,17 @@ generate "$GMAJOR" "$GMINOR" "$GPATCH" "$ADDONMANPATH"
   else
     echo "  WARNING: no SVG-to-PNG converter found (install ImageMagick or librsvg)"
   fi
+  # Create hamburger menu icons for the mobile TOC (inserted by JS in addon pages)
+  cat > hamburger_menu.svg << 'SVGEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" fill="#27575c"/>
+</svg>
+SVGEOF
+  cat > hamburger_menu_close.svg << 'SVGEOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="#27575c"/>
+</svg>
+SVGEOF
   # Write grassdocs.css for legacy addon HTML pages (Material CSS from grass-stable
   # now targets .md-typeset classes, but addon pages use bare HTML 4.01 elements)
   cat > grassdocs.css << 'CSSEOF'
@@ -981,6 +992,27 @@ hr {
 }
 code a, tt a { color: inherit; }
 h4 { color: var(--grass-teal-light); font-size: 1.05em; margin: 1em 0 0.4em; }
+
+/* Hamburger menu / mobile TOC (inserted by JS in GRASS 8.5 addon pages) */
+.hamburger { display: inline-block; margin-left: 0.5em; vertical-align: middle; cursor: pointer; }
+.hamburger img, .close img { width: 24px; height: 24px; }
+.toc-mobile-screen {
+  display: none; list-style: none; margin: 0; padding: 0;
+  background: var(--grass-bg); border: 1px solid var(--grass-border);
+  border-radius: 4px; position: absolute; z-index: 100; min-width: 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.toc-mobile-screen:target { display: block; }
+.toc-mobile-screen:target ~ .hamburger { display: none; }
+.toc-mobile-screen .close { display: none; float: right; padding: 0.2em; }
+.toc-mobile-screen:target .close { display: block; }
+.toc-mobile-screen li { margin: 0; }
+.toc-mobile-screen a {
+  display: block; padding: 0.4em 0.8em; color: var(--grass-teal);
+  text-decoration: none; border-bottom: 1px solid var(--grass-border);
+}
+.toc-mobile-screen a:hover { background: var(--grass-green); color: #fff; }
+#container { position: relative; }
 CSSEOF
 )
 
