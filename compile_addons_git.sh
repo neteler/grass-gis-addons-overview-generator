@@ -418,6 +418,16 @@ echo "-----------------------------------------------------"
 
 MYPWD=$(pwd)
 
+# Load the addon-to-repo mapping into an associative array (used to link
+# addon names in the logs index below and in the manual pages overview)
+declare -A ADDON_REPO
+if [ -f "$ADDON_REPO_MAPPING" ]; then
+  while IFS=',' read -r addon repo; do
+    [ -z "$addon" ] && continue
+    ADDON_REPO["$addon"]="$repo"
+  done < "$ADDON_REPO_MAPPING"
+fi
+
 # loop over all addons
 for m in $(ls -d */Makefile 2>/dev/null); do
   m="${m%%/Makefile}"
@@ -425,6 +435,14 @@ for m in $(ls -d */Makefile 2>/dev/null); do
   case "$m" in
     *\{\{*|*\}\}*|*cookiecutter*|\.*) echo "Skipping invalid addon: $m"; continue;;
   esac
+
+  # Link addon name to its source GitHub repo (if known)
+  mrepo="${ADDON_REPO[$m]}"
+  if [ -n "$mrepo" ]; then
+    addon_cell="<a href=\"https://github.com/$mrepo\"><tt>$m</tt></a>"
+  else
+    addon_cell="<tt>$m</tt>"
+  fi
 
   if [ $SEP -eq 1 ]; then
     path="$ADDON_PATH/$m"
@@ -440,7 +458,7 @@ for m in $(ls -d */Makefile 2>/dev/null); do
     if [ "$current_hash" = "$cached_hash" ]; then
       echo "CACHED $m (source unchanged)"
       printf "%-30s%s\n" "$m" "SUCCESS" >> "$ADDON_PATH/logs/${INDEX_FILE}.log.txt"
-      echo "<tr><td><tt>$m</tt></td><td style=\"background-color: green\">SUCCESS</td>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
+      echo "<tr><td>$addon_cell</td><td style=\"background-color: green\">SUCCESS</td>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
       echo "<td><a href=\"$m.log.txt\">log</a></td></tr>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
       continue
     fi
@@ -461,7 +479,7 @@ for m in $(ls -d */Makefile 2>/dev/null); do
       mv "$GRASS_ADDON_BASE/$ADDONS_PATHS_JSON_FILE" "$(dirname "$GRASS_ADDON_BASE")/$ADDONS_PATHS_JSON_FILE"
     fi
   fi
-  echo "<tr><td><tt>$m</tt></td>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
+  echo "<tr><td>$addon_cell</td>" >> "$ADDON_PATH/logs/${INDEX_FILE}.html"
   make MODULE_TOPDIR="$TOPDIR" clean > /dev/null 2>&1
   make MODULE_TOPDIR="$TOPDIR" \
     BIN="$path/bin" \
@@ -536,14 +554,7 @@ echo "=============================================================="
 test -d "$ADDONMANPATH" && rm -rf "$ADDONMANPATH"
 mkdir -p "$ADDONMANPATH"
 
-# Load the addon-to-repo mapping into an associative array for quick lookup
-declare -A ADDON_REPO
-if [ -f "$ADDON_REPO_MAPPING" ]; then
-  while IFS=',' read -r addon repo; do
-    [ -z "$addon" ] && continue
-    ADDON_REPO["$addon"]="$repo"
-  done < "$ADDON_REPO_MAPPING"
-fi
+# (addon-to-repo mapping already loaded into the ADDON_REPO array in Step 3)
 
 # Fill in mapping gaps: sub-addons compiled by a parent Makefile (e.g.
 # i.sentinel_2.autotraining from mundialis/i.sentinel_2) inherit the

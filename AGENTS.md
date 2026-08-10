@@ -24,11 +24,14 @@ Flags: `-b` (binary path), `-m` (man page path), `-s` (source tree), `-w` (work 
 ## Architecture notes
 
 - No build/test/lint tooling for the generator itself — it's a standalone script.
-- Output: HTML manual pages at `$ADDONMANPATH/index.html`, compilation logs at `$ADDON_PATH/logs/index.html`.
-- `set -e` at line 38 is **commented out** intentionally (script continues past non-fatal failures).
+- Output: HTML manual pages at `$ADDONMANPATH/index.html`, compilation logs at `$ADDON_PATH/logs/index.html` (addon names link to their source GitHub repos via the Step 2 mapping CSV).
+- `set -e` is **commented out** intentionally near the top of the script (script continues past non-fatal failures).
 - GitHub API: queries topic `grass-gis-addons`, excludes `OSGeo/grass-addons`, limit 1000 repos. Authenticated rate: 5000/hr.
 - Addon discovery: searches for Makefiles referencing `MODULE_TOPDIR` or defining `PGM`. Skips cookiecutter templates (contain `{{ }}`).
-- `gh` binary lookup at lines 97–110: checks `/usr/bin/gh`, `/usr/local/bin/gh`, `/snap/bin/gh`, then PATH; verifies via `--version`.
+- `gh` binary lookup (before the GitHub API query): checks `/usr/bin/gh`, `/usr/local/bin/gh`, `/snap/bin/gh`, then PATH; verifies via `--version`.
+- Workaround: creates `$TOPDIR/locale/scriptstrings` before compiling to avoid locale-related build failures.
+- Generated addon manual pages get a navigation bar and hamburger menu/mobile TOC injected during HTML generation (Step 4).
+- Repo-local `grass_logo.png` is copied into the HTML output using a preserved `ORIG_PWD` (replaces former SVG download+convert); missing file triggers only a warning.
 - Docker: see `docker/run_docker.sh` (mounts repo, uses `osgeo/grass-gis:releasebranch_8_3-debian`).
 - Weekly CI: GitHub Actions workflow at `.github/workflows/overview-generator.yml` runs in `osgeo/grass-gis` Docker container and deploys to GitHub Pages. Logs URL is driven by `LOGS_URL_PATH` env var.
 - Compile-time deps: `grass-gis-helpers` (PyPI) is installed for addons that depend on it.
@@ -37,8 +40,9 @@ Flags: `-b` (binary path), `-m` (man page path), `-s` (source tree), `-w` (work 
 
 | File | Purpose |
 |---|---|
-| `compile_addons_git.sh` | Entry point, all logic in one 857-line script |
-| `requirements.txt` | Python deps needed by various addons at compile time |
+| `compile_addons_git.sh` | Entry point, all logic in a single script |
+| `grass_logo.png` | Logo copied into generated HTML output (soft dependency; warning if missing) |
+| `requirements.txt` | Python deps needed by various addons at compile time (annotated per addon in comments) |
 | `docker/debian_docker_setup.sh` | Runs inside Debian container to install deps |
 | `docker/run_docker.sh` | Mounts repo and starts container |
 | `.github/workflows/overview-generator.yml` | Weekly CI workflow; builds in `osgeo/grass-gis` Docker container, deploys to GitHub Pages |
